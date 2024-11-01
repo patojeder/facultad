@@ -1,0 +1,40 @@
+@model List<Presupuesto>
+
+<h2>Listado de Presupuestos</h2>
+
+<a asp-controller="Presupuestos" asp-action="CrearPresupuesto" class="btn btn-primary mb-3">Crear Nuevo Presupuesto</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id Presupuesto</th>
+            <th>Nombre Destinatario</th>
+            <th>Fecha</th>
+            <th>Id Producto</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var presupuesto in Model)
+        {
+            <tr>
+                <td>@presupuesto.IdPresupuesto</td>
+                <td>@presupuesto.NombreDestinatario</td>
+                <td>@presupuesto.FechaCreacion</td>
+                <td>@presupuesto.Detalle.Producto.IdProducto</td>
+                <td>@presupuesto.Detalle.Producto.Descripcion</td>
+                <td>$ @presupuesto.Detalle.Producto.Precio</td>
+                <td>@presupuesto.Detalle.Cantidad</td>
+                <td>
+                    <a asp-asp-controller="Presupuestos" asp-action="ModificarPresupuesto" method="get" asp-route-id="@presupuesto.IdPresupuesto"
+                        class="btn btn-warning btn-sm">Modificar</a>
+                    <a asp-controller="Presupuestos" asp-action="EliminarPresupuesto" method="get" asp-route-id="@presupuesto.IdPresupuesto"
+                        class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

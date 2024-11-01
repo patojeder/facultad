@@ -1,13 +1,13 @@
 
 using Microsoft.Data.Sqlite;
 
-class PresupuestoRepository
+class PresupuestosRepository
 {
     private string connectionString = @"Data Source = db/Tienda.db;Cache=Shared";
 
     public bool CrearPresupuesto(Presupuesto presupuesto)
     {
-        ProductoRepository repoProductos = new ProductoRepository();
+        ProductosRepository repoProductos = new ProductosRepository();
 
         foreach (var detalle in presupuesto.Detalle)
         {
@@ -151,7 +151,7 @@ class PresupuestoRepository
 
     public bool AgregarProducto(int idPresupuesto, int idProducto, int cantidad)
     {
-        ProductoRepository repoProductos = new ProductoRepository();
+        ProductosRepository repoProductos = new ProductosRepository();
         if (ObtenerPresupuestoPorId(idPresupuesto) == null || repoProductos.ObtenerProducto(idProducto) == null)
         {
             return false;

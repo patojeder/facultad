@@ -2,7 +2,7 @@
 
 <h2>Listado de Productos</h2>
 
-<a asp-action="CrearProducto" class="btn btn-primary mb-3">Crear Nuevo Producto</a>
+<a asp-controller="Productos" asp-action="CrearProducto" class="btn btn-primary mb-3">Crear Nuevo Producto</a>
 
 <table class="table table-striped">
     <thead>
@@ -21,9 +21,9 @@
                 <td>@producto.Descripcion</td>
                 <td>$ @producto.Precio</td>
                 <td>
-                    <a asp-asp-controller="Productos" asp-action="ModificarProducto" method="post" asp-route-id="@producto.IdProducto"
+                    <a asp-asp-controller="Productos" asp-action="ModificarProducto" method="get" asp-route-id="@producto.IdProducto"
                         class="btn btn-warning btn-sm">Modificar</a>
-                    <a asp-action="EliminarProducto" asp-route-id="@producto.IdProducto"
+                    <a asp-controller="Productos" asp-action="EliminarProducto" method="get" asp-route-id="@producto.IdProducto"
                         class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
