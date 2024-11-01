@@ -1,10 +1,12 @@
 public class PresupuestoDetalle
 {
-    private Producto producto;
-    private int cantidad;
+    Producto producto;
+    int cantidad;
 
-    public PresupuestoDetalle()
+    public PresupuestoDetalle(Producto producto, int cantidad)
     {
+        this.producto = producto;
+        this.cantidad = cantidad;
     }
 
     public Producto Producto { get => producto; set => producto = value; }

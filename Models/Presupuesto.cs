@@ -1,43 +1,47 @@
-using Microsoft.AspNetCore.SignalR.Protocol;
+using System.Text.Json.Serialization;
 
 public class Presupuesto
 {
-    private int idPresupuesto;
-    private string nombreDestinatario;
-    private DateTime fechaCreacion;
-    private List<PresupuestoDetalle> detalle;
+    int idPresupuesto;
+    string nombreDestinatario;
+    DateTime fechaCreacion;
+    List<PresupuestoDetalle> detalle;
 
-    public Presupuesto(){}
-    public Presupuesto(int id, string destinatario)
-    {
-        IdPresupuesto = id;
-        NombreDestinatario = destinatario;
-        Detalle = new List<PresupuestoDetalle>();
-    }
 
     public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
     public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value; }
-    public List<PresupuestoDetalle> Detalle { get => detalle; set => detalle = value; }
     public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
+    public List<PresupuestoDetalle> Detalle { get => detalle; set => detalle = value; }
 
-    public int  MontoPresupuesto()
+    public Presupuesto(int idPresupuesto, string nombreDestinatario, DateTime fechaCreacion)
     {
-        int total = Detalle.Sum(d => d.Cantidad * d.Producto.Precio);
-        /*foreach (var item in Detalle)
-        {
-            total += item.Cantidad * item.Producto.Precio;
-        }*/   
-        return total;   
+        this.idPresupuesto = idPresupuesto;
+        this.nombreDestinatario = nombreDestinatario;
+        this.fechaCreacion = fechaCreacion;
+        detalle = new List<PresupuestoDetalle>();
     }
 
-    public double montoPresupuestoConIva()
-    {
-        int cantSinIva = MontoPresupuesto();
-        return cantSinIva * 1.21;
-    }
+    // public Presupuesto(int idPresupuesto, string nombreDestinatario, DateTime fechaCreacion, List<PresupuestoDetalle> detalle)
+    // {
+    //     this.idPresupuesto = idPresupuesto;
+    //     this.nombreDestinatario = nombreDestinatario;
+    //     this.fechaCreacion = fechaCreacion;
+    //     this.detalle = detalle;
+    // }
 
+    public double MontoPresupuesto()
+    {
+        int monto = detalle.Sum(d => d.Cantidad * d.Producto.Precio);
+        return monto;
+    }
+    public double MontoPresupuestoConIva()
+    {
+        return MontoPresupuesto() * 1.21;
+    }
     public int CantidadProductos()
     {
-        return Detalle.Sum(d => d.Cantidad);
+        return detalle.Sum(d => d.Cantidad);
     }
+
+
 }
