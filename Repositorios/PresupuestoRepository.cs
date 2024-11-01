@@ -7,7 +7,7 @@ class PresupuestoRepository
 
     public bool CrearPresupuesto(Presupuesto presupuesto)
     {
-        ProductosRepository repoProductos = new ProductosRepository();
+        ProductoRepository repoProductos = new ProductoRepository();
 
         foreach (var detalle in presupuesto.Detalle)
         {
@@ -151,7 +151,7 @@ class PresupuestoRepository
 
     public bool AgregarProducto(int idPresupuesto, int idProducto, int cantidad)
     {
-        ProductosRepository repoProductos = new ProductosRepository();
+        ProductoRepository repoProductos = new ProductoRepository();
         if (ObtenerPresupuestoPorId(idPresupuesto) == null || repoProductos.ObtenerProducto(idProducto) == null)
         {
             return false;

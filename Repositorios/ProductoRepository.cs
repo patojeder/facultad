@@ -1,7 +1,4 @@
 using Microsoft.Data.Sqlite;
-using ModelsProducto;
-
-namespace productoRepository;
 
 class ProductoRepository
 {

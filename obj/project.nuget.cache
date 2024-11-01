@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bc9E45xB6kk=",
+  "dgSpecHash": "zQBesOPutfg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
+  "projectFilePath": "c:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\trigo\\.nuget\\packages\\microsoft.data.sqlite\\8.0.10\\microsoft.data.sqlite.8.0.10.nupkg.sha512",
     "C:\\Users\\trigo\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.10\\microsoft.data.sqlite.core.8.0.10.nupkg.sha512",

@@ -1,6 +1,3 @@
-namespace ModelsProducto;
-
-
 public class Producto
 {
     int idProducto;

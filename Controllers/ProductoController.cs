@@ -1,8 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp6_2024_Trigo00.Models;
-using productoRepository;
-using ModelsProducto;
 
 namespace tl2_tp6_2024_Trigo00.Controllers;
 
@@ -41,7 +39,7 @@ public class ProductoController : Controller
         return View(producto);
     }
 
-    [HttpPost]
+    [HttpGet]
     public IActionResult ModificarProducto(int id)
     {
         var producto = _productoRepository.ObtenerProducto(id);
@@ -49,17 +47,18 @@ public class ProductoController : Controller
         {
             return NotFound();
         }
-        else
+        return View(producto);
+    }
+
+    [HttpPost]
+    public IActionResult ModificarProducto(int id, Producto producto)
+    {
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
-            {
-                _productoRepository.ModificarProducto(id, producto);
-                return RedirectToAction(nameof(ListarProductos));
-            }
-            return View(producto);
+            _productoRepository.ModificarProducto(id, producto);
+            return RedirectToAction(nameof(ListarProductos));
         }
-
-
+        return View(producto);
     }
 
     [HttpGet]
@@ -82,7 +81,7 @@ public class ProductoController : Controller
 
     public IActionResult Index()
     {
-        return RedirectToAction(nameof(ListarProductos));
+        return View(_productoRepository.ObtenerProductos());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
