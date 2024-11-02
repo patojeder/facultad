@@ -49,7 +49,7 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult ModificarPresupuesto(int id)
     {
-        var presupuesto = _presupuestosRepository.ObtenerDetalle(id);
+        var presupuesto = _presupuestosRepository.ObtenerPresupuestoPorId(id);
         if (presupuesto == null)
         {
             return NotFound();
@@ -62,7 +62,7 @@ public class PresupuestosController : Controller
     {
         if (ModelState.IsValid)
         {
-            _presupuestosRepository.ModificarPresupuesto(presupuesto);
+            _presupuestosRepository.ModificarPresupuestoQ(presupuesto);
             return RedirectToAction(nameof(Index));
         }
         return View(presupuesto);

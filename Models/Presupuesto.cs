@@ -25,7 +25,7 @@ public class Presupuesto
     public Presupuesto()
     {
         IdPresupuesto = autoincremento++;
-        FechaCreacion = (DateTime.Today).ToString();
+        FechaCreacion = DateTime.Today.ToString();
         detalle = new List<PresupuestoDetalle>();
     }
 
