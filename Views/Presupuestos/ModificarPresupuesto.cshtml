@@ -1,0 +1,40 @@
+@model Presupuesto
+
+<h2>Modificar Presupuesto</h2>
+
+<form asp-action="ModificarPresupuesto" method="post">
+    <input type="hidden" asp-for="IdPresupuesto" />
+    <div class="form-group">
+        <label asp-for="IdPresupuesto">Id Presupuesto</label>
+        <input asp-for="IdPresupuesto" class="form-control" disabled />
+    </div>
+    <div class="form-group">
+        <label asp-for="NombreDestinatario">Nombre Destinatario</label>
+        <input asp-for="NombreDestinatario" class="form-control" type="text" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="FechaCreacion">Fecha de Creación</label>
+        <input asp-for="FechaCreacion" class="form-control" type="date" required />
+    </div>
+    @* <h3>Detalles del Presupuesto</h3>
+    <div id="detallesPresupuesto">
+        @for (int i = 0; i < Model.Detalle.Count; i++)
+        {
+            <div class="form-group">
+                <label asp-for="Detalle[i].Producto.Descripcion">Producto</label>
+                <input asp-for="Detalle[i].Producto.Descripcion" class="form-control" disabled />
+                
+                <label asp-for="Detalle[i].Cantidad">Cantidad</label>
+                <input asp-for="Detalle[i].Cantidad" class="form-control" type="number" disabled />
+
+                <label asp-for="Detalle[i].Producto.Precio">Precio</label>
+                <input asp-for="Detalle[i].Producto.Precio" class="form-control" type="number" disabled />
+            </div>
+        }
+    </div> *@
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>

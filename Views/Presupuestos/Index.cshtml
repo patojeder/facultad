@@ -1,43 +1,60 @@
 @model List<Presupuesto>
 
-<h2>Listado de Presupuestos</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Listado de Presupuestos</h2>
 
-<a asp-controller="Presupuestos" asp-action="CrearPresupuesto" class="btn btn-primary mb-3">Crear Nuevo Presupuesto</a>
+    <a asp-controller="Presupuestos" asp-action="CrearPresupuesto" class="btn btn-primary mb-3">
+        <i class="fas fa-plus"></i> Crear Nuevo Presupuesto
+    </a>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Id Presupuesto</th>
-            <th>Nombre Destinatario</th>
-            <th>Fecha</th>
-            <th>Id Producto</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var presupuesto in Model)
-        {
-            <tr>
-                <td>@presupuesto.IdPresupuesto</td>
-                <td>@presupuesto.NombreDestinatario</td>
-                <td>@presupuesto.FechaCreacion</td>
-                @foreach (var detalle in presupuesto.Detalle)
-                {
-                    <td>@detalle.Producto.IdProducto</td>
-                    <td>@detalle.Producto.Descripcion</td>
-                    <td>$ @detalle.Producto.Precio</td>
-                    <td>@detalle.Cantidad</td>
-                }
-                <td>
-                    <a asp-asp-controller="Presupuestos" asp-action="ModificarPresupuesto" method="get" asp-route-id="@presupuesto.IdPresupuesto"
-                        class="btn btn-warning btn-sm">Modificar</a>
-                    <a asp-controller="Presupuestos" asp-action="EliminarPresupuesto" method="get" asp-route-id="@presupuesto.IdPresupuesto"
-                        class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No hay presupuestos registrados en el sistema.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Destinatario</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var presupuesto in Model)
+                    {
+                        <tr>
+                            <td>@presupuesto.IdPresupuesto</td>
+                            <td>@(string.IsNullOrEmpty(presupuesto.NombreDestinatario) ? "-" : presupuesto.NombreDestinatario)</td>
+                            <td>@presupuesto.FechaCreacion</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-controller="Presupuestos" asp-action="ListarDetalles" 
+                                       asp-route-id="@presupuesto.IdPresupuesto"
+                                       class="btn btn-info btn-sm">
+                                        <i class="fas fa-info-circle"></i> Detalles
+                                    </a>
+                                    <a asp-controller="Presupuestos" asp-action="ModificarPresupuesto" 
+                                       asp-route-id="@presupuesto.IdPresupuesto"
+                                       class="btn btn-warning btn-sm ms-1">
+                                        <i class="fas fa-edit"></i> Modificar
+                                    </a>
+                                    <a asp-controller="Presupuestos" asp-action="EliminarPresupuesto" 
+                                       asp-route-id="@presupuesto.IdPresupuesto"
+                                       class="btn btn-danger btn-sm ms-1">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

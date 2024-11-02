@@ -17,7 +17,6 @@ class ProductosRepository
             command.ExecuteNonQuery();
             connection.Close();            
         }
-
     }
 
     public List<Producto> ObtenerProductos()

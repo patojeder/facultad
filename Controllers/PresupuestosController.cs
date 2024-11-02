@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using tl2_tp6_2024_Trigo00.Models;
 
 namespace tl2_tp6_2024_Trigo00.Controllers;
 
@@ -16,8 +18,15 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult ListarPresupuestos()
     {
-        var presupuestos = _presupuestosRepository.ObtenerPresupuestos();
+        var presupuestos = _presupuestosRepository.GetPresupuestos();
         return View(presupuestos);
+    }
+
+    [HttpGet]
+    public IActionResult ListarDetalles(int id)
+    {
+        var listaDetalle = _presupuestosRepository.ObtenerDetalle(id);
+        return View(listaDetalle);
     }
 
     [HttpGet]
@@ -37,51 +46,49 @@ public class PresupuestosController : Controller
         return View(presupuesto);
     }
 
-    /*
-
     [HttpGet]
-    public IActionResult ModificarProducto(int id)
+    public IActionResult ModificarPresupuesto(int id)
     {
-        var producto = _productosRepository.ObtenerProducto(id);
-        if (producto == null)
+        var presupuesto = _presupuestosRepository.ObtenerDetalle(id);
+        if (presupuesto == null)
         {
             return NotFound();
         }
-        return View(producto);
+        return View(presupuesto);
     }
 
     [HttpPost]
-    public IActionResult ModificarProducto(int id, Producto producto)
+    public IActionResult ModificarPresupuesto(Presupuesto presupuesto)
     {
         if (ModelState.IsValid)
         {
-            _productosRepository.ModificarProducto(id, producto);
+            _presupuestosRepository.ModificarPresupuesto(presupuesto);
             return RedirectToAction(nameof(Index));
         }
-        return View(producto);
+        return View(presupuesto);
     }
 
     [HttpGet]
-    public IActionResult EliminarProducto(int id)
+    public IActionResult EliminarPresupuesto(int id)
     {
-        var producto = _productosRepository.ObtenerProducto(id);
-        if (producto == null)
+        var presupuesto = _presupuestosRepository.ObtenerPresupuestoPorId(id);
+        if (presupuesto == null)
         {
             return NotFound();
         }
-        return View(producto);
+        return View(presupuesto);
     }
 
     [HttpPost]
-    public IActionResult EliminarProductoConfirmado(int id)
+    public IActionResult EliminarPresupuestoConfirmado(int id)
     {
-        _productosRepository.EliminarProducto(id);
+        _presupuestosRepository.EliminarPresupuestoPorId(id);
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Index()
+     public IActionResult Index()
     {
-        return View(_productosRepository.ObtenerProductos());
+        return View(_presupuestosRepository.GetPresupuestos());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -89,5 +96,5 @@ public class PresupuestosController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-    */
+    
 }

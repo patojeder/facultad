@@ -3,6 +3,10 @@ public class PresupuestoDetalle
     Producto producto;
     int cantidad;
 
+    public PresupuestoDetalle()
+    {
+    }
+
     public PresupuestoDetalle(Producto producto, int cantidad)
     {
         this.producto = producto;
