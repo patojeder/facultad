@@ -4,17 +4,17 @@ public class Presupuesto
 {
     private static int autoincremento = 5;
     private int idPresupuesto;
-    private string fechaCreacion;
+    private DateTime fechaCreacion;
     private Cliente cliente;
     private List<PresupuestoDetalle> detalle;
 
 
     public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
-    public string FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
+    public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
     public Cliente Cliente { get => cliente; set => cliente = value; }
     public List<PresupuestoDetalle> Detalle { get => detalle; set => detalle = value; }
 
-    public Presupuesto(int idPresupuesto, string fechaCreacion, Cliente cliente)
+    public Presupuesto(int idPresupuesto, DateTime fechaCreacion, Cliente cliente)
     {
         this.idPresupuesto = idPresupuesto;
         this.fechaCreacion = fechaCreacion;
@@ -25,7 +25,7 @@ public class Presupuesto
     public Presupuesto()
     {
         IdPresupuesto = autoincremento++;
-        FechaCreacion = DateTime.Today.ToString();
+        FechaCreacion = DateTime.Today;
         detalle = new List<PresupuestoDetalle>();
     }
 

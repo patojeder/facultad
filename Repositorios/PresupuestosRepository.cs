@@ -41,7 +41,7 @@ class PresupuestosRepository
     {
         string queryDetalle = @"SELECT * 
                         FROM Presupuestos
-                        INNER JOIN Clientes USING (idCliente)";
+                        LEFT JOIN Clientes USING (idCliente)";
         List<Presupuesto> presupuestos = new List<Presupuesto>();
 
         using (SqliteConnection connection = new SqliteConnection(connectionString))
@@ -53,7 +53,7 @@ class PresupuestosRepository
                 while (reader.Read())
                 {
                     int idpres = Convert.ToInt32(reader["idPresupuesto"]);
-                    string fecha = Convert.ToString(reader["FechaCreacion"]);
+                    DateTime fecha = Convert.ToDateTime(reader["FechaCreacion"]);
                     int idC = Convert.ToInt32(reader["idCliente"]);
                     string nombreC = Convert.ToString(reader["Nombre"]);
                     string emailC = Convert.ToString(reader["Email"]);
@@ -146,7 +146,7 @@ class PresupuestosRepository
                     if (cont == 1)
                     {
                         Cliente cliente = new Cliente(Convert.ToInt32(reader["idCliente"]), reader["Nombre"].ToString(), reader["Email"].ToString(), reader["Telefono"].ToString());
-                        presupuesto = new Presupuesto(Convert.ToInt32(reader["idPresupuesto"]), Convert.ToString(reader["FechaCreacion"]), cliente);
+                        presupuesto = new Presupuesto(Convert.ToInt32(reader["idPresupuesto"]), Convert.ToDateTime(reader["FechaCreacion"]), cliente);
                     }
                     Producto producto = new Producto(Convert.ToInt32(reader["idProducto"]), reader["Producto"].ToString(), Convert.ToInt32(reader["Precio"]));
                     PresupuestoDetalle detalle = new PresupuestoDetalle(producto, Convert.ToInt32(reader["Cantidad"]));
