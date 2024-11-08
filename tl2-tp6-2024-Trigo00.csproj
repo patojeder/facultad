@@ -6,6 +6,12 @@
     <RootNamespace>tl2_tp6_2024_Trigo00</RootNamespace>
   </PropertyGroup>
 
+   <ItemGroup>
+    <None Update="db/Tienda.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SQLite" Version="8.0.10" />
   </ItemGroup>

@@ -14,11 +14,11 @@ public class Presupuesto
     public Cliente Cliente { get => cliente; set => cliente = value; }
     public List<PresupuestoDetalle> Detalle { get => detalle; set => detalle = value; }
 
-    public Presupuesto(int idPresupuesto, string fechaCreacion)
+    public Presupuesto(int idPresupuesto, string fechaCreacion, Cliente cliente)
     {
         this.idPresupuesto = idPresupuesto;
         this.fechaCreacion = fechaCreacion;
-        cliente = new Cliente();
+        this.cliente = cliente;
         detalle = new List<PresupuestoDetalle>();
     }
 

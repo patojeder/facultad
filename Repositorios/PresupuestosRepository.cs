@@ -5,15 +5,15 @@ class PresupuestosRepository
     string connectionString = @"Data Source = db/Tienda.db;Cache=Shared";
     public void CrearPresupuesto(Presupuesto presupuesto)
     {
-        string query1 = @"INSERT INTO Presupuestos (idPresupuesto, NombreDestinatario, FechaCreacion) VALUES (@idPre, @nombrePre, @fechaPre)";
+        string query1 = @"INSERT INTO Presupuestos (idPresupuesto, FechaCreacion, idCliente) VALUES (@idPre, @fechaPre, @idC)";
         using (SqliteConnection connection = new SqliteConnection(connectionString))
         {
             connection.Open();
             using (SqliteCommand command = new SqliteCommand(query1, connection))
             {
                 command.Parameters.Add(new SqliteParameter("@idPre", presupuesto.IdPresupuesto));
-                command.Parameters.Add(new SqliteParameter("@nombrePre", presupuesto.NombreDestinatario));
                 command.Parameters.Add(new SqliteParameter("@fechaPre", presupuesto.FechaCreacion));
+                command.Parameters.Add(new SqliteParameter("@idC", presupuesto.Cliente.Id));
 
                 command.ExecuteNonQuery();
             }
@@ -39,7 +39,9 @@ class PresupuestosRepository
 
     public List<Presupuesto> GetPresupuestos()
     {
-        string queryDetalle = @"SELECT idPresupuesto, NombreDestinatario, FechaCreacion FROM Presupuestos";
+        string queryDetalle = @"SELECT * 
+                        FROM Presupuestos
+                        INNER JOIN Clientes USING (idCliente)";
         List<Presupuesto> presupuestos = new List<Presupuesto>();
 
         using (SqliteConnection connection = new SqliteConnection(connectionString))
@@ -51,9 +53,15 @@ class PresupuestosRepository
                 while (reader.Read())
                 {
                     int idpres = Convert.ToInt32(reader["idPresupuesto"]);
-                    string nombre = Convert.ToString(reader["NombreDestinatario"]);
                     string fecha = Convert.ToString(reader["FechaCreacion"]);
-                    Presupuesto presu1 = new Presupuesto(idpres, nombre, fecha);
+                    int idC = Convert.ToInt32(reader["idCliente"]);
+                    string nombreC = Convert.ToString(reader["Nombre"]);
+                    string emailC = Convert.ToString(reader["Email"]);
+                    string telC = Convert.ToString(reader["Telefono"]);
+
+                    Cliente nuevoCliente = new Cliente(idC, nombreC, emailC, telC);
+
+                    Presupuesto presu1 = new Presupuesto(idpres, fecha, nuevoCliente);
                     presupuestos.Add(presu1);
                 }
             }
@@ -105,14 +113,19 @@ class PresupuestosRepository
 
         string query = @"SELECT 
             P.idPresupuesto,
-            P.NombreDestinatario,
             P.FechaCreacion,
+            C.idCliente,
+            C.Nombre,
+            C.Email,
+            C.Telefono,
             PR.idProducto,
             PR.Descripcion AS Producto,
             PR.Precio,
             PD.Cantidad
         FROM 
             Presupuestos P
+        JOIN 
+            Clientes C USING (idCliente)
         JOIN 
             PresupuestosDetalle PD ON P.idPresupuesto = PD.idPresupuesto
         JOIN 
@@ -132,7 +145,8 @@ class PresupuestosRepository
                 {
                     if (cont == 1)
                     {
-                        presupuesto = new Presupuesto(Convert.ToInt32(reader["idPresupuesto"]), reader["NombreDestinatario"].ToString(), Convert.ToString(reader["FechaCreacion"]));
+                        Cliente cliente = new Cliente(Convert.ToInt32(reader["idCliente"]), reader["Nombre"].ToString(), reader["Email"].ToString(), reader["Telefono"].ToString());
+                        presupuesto = new Presupuesto(Convert.ToInt32(reader["idPresupuesto"]), Convert.ToString(reader["FechaCreacion"]), cliente);
                     }
                     Producto producto = new Producto(Convert.ToInt32(reader["idProducto"]), reader["Producto"].ToString(), Convert.ToInt32(reader["Precio"]));
                     PresupuestoDetalle detalle = new PresupuestoDetalle(producto, Convert.ToInt32(reader["Cantidad"]));
@@ -172,13 +186,13 @@ class PresupuestosRepository
 
                 // Actualiza el presupuesto en la tabla Presupuestos
                 string query = @"UPDATE Presupuestos 
-                                 SET NombreDestinatario = @destinatario, FechaCreacion = @fecha
+                                 SET FechaCreacion = @fecha, idCliente = @idC
                                  WHERE idPresupuesto = @id";
 
                 using (var command = new SqliteCommand(query, connection, transaction))
                 {
-                    command.Parameters.AddWithValue("@destinatario", presupuesto.NombreDestinatario);
                     command.Parameters.AddWithValue("@fecha", presupuesto.FechaCreacion);
+                    command.Parameters.AddWithValue("@idC", presupuesto.Cliente.Id);
                     command.Parameters.AddWithValue("@id", presupuesto.IdPresupuesto);
                     command.ExecuteNonQuery();
                 }

@@ -15,10 +15,74 @@ public class ClientesController : Controller
         _clientesRepository = new ClientesRepository();
     }
 
-    /*public IActionResult Index()
+    [HttpGet]
+    public IActionResult ListarClientes()
     {
-        return View(_clientesRepository.ObtenerProductos());
-    }*/
+        var clientes = _clientesRepository.ObtenerClientes();
+        return View(clientes);
+    }
+
+    [HttpGet]
+    public IActionResult CrearCliente()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult CrearCliente(Cliente cliente)
+    {
+        if (ModelState.IsValid) // se utiliza para verificar si los datos enviados en un formulario cumplen con todas las reglas de validación definidas en el modelo de datos.
+        {
+            _clientesRepository.CrearCliente(cliente);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(cliente);
+    }
+
+    [HttpGet]
+    public IActionResult ModificarCliente(int id)
+    {
+        var cliente = _clientesRepository.ObtenerCliente(id);
+        if (cliente == null)
+        {
+            return NotFound();
+        }
+        return View(cliente);
+    }
+
+    [HttpPost]
+    public IActionResult ModificarCliente(int id, Cliente cliente)
+    {
+        if (ModelState.IsValid)
+        {
+            _clientesRepository.ModificarCliente(id, cliente);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(cliente);
+    }
+
+    [HttpGet]
+    public IActionResult EliminarCliente(int id)
+    {
+        var cliente = _clientesRepository.ObtenerCliente(id);
+        if (cliente == null)
+        {
+            return NotFound();
+        }
+        return View(cliente);
+    }
+
+    [HttpPost]
+    public IActionResult EliminarClienteConfirmado(int id)
+    {
+        _clientesRepository.EliminarCliente(id);
+        return RedirectToAction(nameof(Index));
+    }
+
+    public IActionResult Index()
+    {
+        return View(_clientesRepository.ObtenerClientes());
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

@@ -20,7 +20,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Destinatario</th>
+                        <th scope="col">ID Cliente</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Acciones</th>
                     </tr>
@@ -30,7 +30,7 @@
                     {
                         <tr>
                             <td>@presupuesto.IdPresupuesto</td>
-                            <td>@(string.IsNullOrEmpty(presupuesto.NombreDestinatario) ? "-" : presupuesto.NombreDestinatario)</td>
+                            <td>@presupuesto.Cliente.Id</td>
                             <td>@presupuesto.FechaCreacion</td>
                             <td>
                                 <div class="btn-group" role="group">

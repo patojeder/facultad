@@ -18,6 +18,22 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\trigo\OneDrive\Escritorio\Taller de Lenguajes 2\tl2-tp6-2024-Trigo00
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/trigo/OneDrive/Escritorio/Taller de Lenguajes 2/tl2-tp6-2024-Trigo00/Views/Clientes/CrearCliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcQ3JlYXJDbGllbnRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/trigo/OneDrive/Escritorio/Taller de Lenguajes 2/tl2-tp6-2024-Trigo00/Views/Clientes/EliminarCliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcRWxpbWluYXJDbGllbnRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/trigo/OneDrive/Escritorio/Taller de Lenguajes 2/tl2-tp6-2024-Trigo00/Views/Clientes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/trigo/OneDrive/Escritorio/Taller de Lenguajes 2/tl2-tp6-2024-Trigo00/Views/Clientes/ModificarCliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50ZXNcTW9kaWZpY2FyQ2xpZW50ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/trigo/OneDrive/Escritorio/Taller de Lenguajes 2/tl2-tp6-2024-Trigo00/Views/Presupuestos/CrearPresupuesto.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlc3VwdWVzdG9zXENyZWFyUHJlc3VwdWVzdG8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
