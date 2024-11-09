@@ -1,146 +1,58 @@
 @model PresupuestoViewModel
 
-<div class="container mt-4">
-    <h2>Crear Nuevo Presupuesto</h2>
+<form asp-action="CrearPresupuesto" method="post" class="container mt-4 p-4 border rounded bg-light">
+    <h2 class="text-center mb-4">Crear Presupuesto</h2>
 
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <ul>
-                @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    <li>@modelError.ErrorMessage</li>
-                }
-            </ul>
-        </div>
-    }
+    <div class="mb-3">
+        <label for="ClienteIdSeleccionado" class="form-label">Seleccione Cliente:</label>
+        <select asp-for="ClienteIdSeleccionado" asp-items="@(new SelectList(Model.Clientes, "Id", "Nombre"))" class="form-select">
+            <option value="0">Seleccione un cliente</option>
+        </select>
+    </div>
 
-    <div class="card">
-        <div class="card-body">
-            <!-- Selección del Cliente -->
-            <form asp-action="CrearPresupuesto" method="post" id="presupuestoForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ClienteIdSeleccionado" class="control-label">Cliente</label>
-                            <select asp-for="ClienteIdSeleccionado" class="form-select" required
-                                asp-items="@(new SelectList(Model.Clientes, "Id", "Nombre"))" id="clienteSelect">
-                                <option value="">-- Seleccione un Cliente --</option>
-                            </select>
-                            <span asp-validation-for="ClienteIdSeleccionado" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
+    <div id="productos-container">
+        <h4>Productos:</h4>
+        <button type="button" class="btn btn-primary mb-3" onclick="addProductField()">Agregar Producto</button>
 
-                <!-- Selección de Productos -->
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="ProductoId">Producto</label>
-                            <select id="ProductoId" name="ProductoId" class="form-select" required>
-                                <option value="">-- Seleccione un Producto --</option>
-                                @foreach (var producto in Model.Productos)
-                                {
-                                    <option value="@producto.IdProducto" data-precio="@producto.Precio">
-                                        @producto.Descripcion - $@producto.Precio
-                                    </option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="Cantidad">Cantidad</label>
-                            <input type="number" id="Cantidad" name="Cantidad" class="form-control" min="1" value="1"
-                                required />
-                        </div>
-                    </div>
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary" id="btnAgregarProducto">
-                            <i class="bi bi-plus-circle"></i> Agregar
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <!-- Lista de Productos Seleccionados -->
-            @if (Model.ProductosSeleccionados.Any())
-            {
-                <div class="mt-4">
-                    <h4>Productos en el Presupuesto</h4>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio Unitario</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    decimal total = 0;
-                                }
-                                @foreach (var productoId in Model.ProductosSeleccionados)
-                                {
-                                    var producto = Model.Productos.First(p => p.IdProducto == productoId);
-                                    var cantidad = Model.CantidadProductosSeleccionados[productoId];
-                                    var subtotal = producto.Precio * cantidad;
-                                    total += subtotal;
-
-                                    <tr>
-                                        <td>@producto.Descripcion</td>
-                                        <td>@cantidad</td>
-                                        <td>$@producto.Precio</td>
-                                        <td>$@subtotal</td>
-                                    </tr>
-                                }
-                                <tr class="table-info">
-                                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
-                                    <td colspan="2"><strong>$@total</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Botón para Confirmar Presupuesto -->
-                    <form asp-action="ConfirmarPresupuesto" method="post">
-                        <input type="hidden" asp-for="ClienteIdSeleccionado" />
-                        @foreach (var producto in Model.ProductosSeleccionados)
-                        {
-                            <input type="hidden" name="ProductosSeleccionados" value="@producto" />
-                            <input type="hidden" name="CantidadProductosSeleccionados[@producto]"
-                                value="@Model.CantidadProductosSeleccionados[producto]" />
-                        }
-                        <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-check-circle"></i> Confirmar Presupuesto
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            }
+        <div class="producto-field row mb-2">
+            <div class="col-md-8">
+                <select name="ProductosSeleccionados[0].ProductoId" class="form-select">
+                    @foreach (var producto in Model.Productos)
+                    {
+                        <option value="@producto.IdProducto">@producto.Descripcion</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="ProductosSeleccionados[0].Cantidad" min="1" placeholder="Cantidad" class="form-control" />
+            </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            // Deshabilitar la selección del cliente si ya hay productos agregados
-            if (@Model.ProductosSeleccionados.Count > 0) {
-                $('#clienteSelect').prop('disabled', true);
-            }
+    <button type="submit" class="btn btn-success">Crear Presupuesto</button>
+</form>
 
-            // Validación del formulario
-            $('#presupuestoForm').submit(function (e) {
-                if ($('#clienteSelect').val() === '') {
-                    e.preventDefault();
-                    alert('Debe seleccionar un cliente antes de agregar productos.');
-                    return false;
-                }
-            });
-        });
-    </script>
-}
+<script>
+    let productIndex = 1;
+
+    function addProductField() {
+        const container = document.getElementById('productos-container');
+        const newField = document.createElement('div');
+        newField.className = 'producto-field row mb-2';
+        newField.innerHTML = `
+            <div class="col-md-8">
+                <select name="ProductosSeleccionados[${productIndex}].ProductoId" class="form-select">
+                    @foreach (var producto in Model.Productos)
+                    {
+                        <option value="@producto.IdProducto">@producto.Descripcion</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="ProductosSeleccionados[${productIndex}].Cantidad" min="1" placeholder="Cantidad" class="form-control" />
+            </div>
+        `;
+        container.appendChild(newField);
+        productIndex++;
+    }
+</script>

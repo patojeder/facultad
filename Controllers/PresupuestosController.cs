@@ -45,12 +45,10 @@ public class PresupuestosController : Controller
     }
 
     [HttpPost]
-    public IActionResult CrearPresupuesto(PresupuestoViewModel viewModel, int ProductoId, int Cantidad)
+    public IActionResult CrearPresupuesto(PresupuestoViewModel viewModel)
     {
-        // Si el modelo es válido
         if (ModelState.IsValid)
         {
-            // Si un cliente no ha sido seleccionado, no dejamos agregar productos
             if (viewModel.ClienteIdSeleccionado == 0)
             {
                 ModelState.AddModelError("", "Debe seleccionar un cliente antes de agregar productos.");
@@ -59,46 +57,8 @@ public class PresupuestosController : Controller
                 return View(viewModel);
             }
 
-            // Si se selecciona un producto válido
-            if (ProductoId > 0 && Cantidad > 0)
-            {
-                // Verificar si el producto ya fue seleccionado
-                if (!viewModel.ProductosSeleccionados.Contains(ProductoId))
-                {
-                    viewModel.ProductosSeleccionados.Add(ProductoId); // Agregar el producto a la lista
-                }
-
-                // Actualizar la cantidad si el producto ya está en la lista
-                if (viewModel.CantidadProductosSeleccionados.ContainsKey(ProductoId))
-                {
-                    viewModel.CantidadProductosSeleccionados[ProductoId] += Cantidad; // Sumar la cantidad
-                }
-                else
-                {
-                    viewModel.CantidadProductosSeleccionados.Add(ProductoId, Cantidad); // Agregar nuevo producto con cantidad
-                }
-            }
-
-            // Recargar productos y clientes para que se muestren correctamente
-            viewModel.Clientes = _clientesRepository.ObtenerClientes();
-            viewModel.Productos = _productosRepository.ObtenerProductos();
-
-            return View(viewModel);
-        }
-
-        // Si el modelo no es válido, recargamos los datos
-        viewModel.Clientes = _clientesRepository.ObtenerClientes();
-        viewModel.Productos = _productosRepository.ObtenerProductos();
-        return View(viewModel);
-    }
-
-    [HttpPost]
-    public IActionResult ConfirmarPresupuesto(PresupuestoViewModel viewModel)
-    {
-        if (ModelState.IsValid)
-        {
+            // Crea el presupuesto con el cliente seleccionado
             var cliente = _clientesRepository.ObtenerCliente(viewModel.ClienteIdSeleccionado);
-
             var nuevoPresupuesto = new Presupuesto
             {
                 Cliente = cliente,
@@ -106,22 +66,27 @@ public class PresupuestosController : Controller
                 Detalle = new List<PresupuestoDetalle>()
             };
 
-            foreach (var productoId in viewModel.ProductosSeleccionados)
+            // Agrega cada producto con su cantidad al detalle del presupuesto
+            foreach (var productoSeleccionado in viewModel.ProductosSeleccionados)
             {
-                var producto = _productosRepository.ObtenerProducto(productoId);
-                var cantidad = viewModel.CantidadProductosSeleccionados[productoId];
-
-                nuevoPresupuesto.Detalle.Add(new PresupuestoDetalle
+                if (productoSeleccionado.ProductoId > 0 && productoSeleccionado.Cantidad > 0)
                 {
-                    Producto = producto,
-                    Cantidad = cantidad
-                });
+                    var producto = _productosRepository.ObtenerProducto(productoSeleccionado.ProductoId);
+                    nuevoPresupuesto.Detalle.Add(new PresupuestoDetalle
+                    {
+                        Producto = producto,
+                        Cantidad = productoSeleccionado.Cantidad
+                    });
+                }
             }
 
             _presupuestosRepository.CrearPresupuesto(nuevoPresupuesto);
-            return RedirectToAction(nameof(Index)); // Redirigir a la lista de presupuestos
+            return RedirectToAction(nameof(Index));
         }
 
+        // Recargar productos y clientes para que se muestren correctamente si hay errores
+        viewModel.Clientes = _clientesRepository.ObtenerClientes();
+        viewModel.Productos = _productosRepository.ObtenerProductos();
         return View(viewModel);
     }
 
