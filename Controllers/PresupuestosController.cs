@@ -93,24 +93,41 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult ModificarPresupuesto(int id)
     {
+        // Cargar el presupuesto y la lista de clientes desde la base de datos
         var presupuesto = _presupuestosRepository.ObtenerPresupuestoPorId(id);
-        if (presupuesto == null)
+        var clientes = _clientesRepository.ObtenerClientes();
+
+        var viewModel = new ModificarPresupuestoViewModel
         {
-            return NotFound();
-        }
-        return View(presupuesto);
+            Presupuesto = presupuesto,
+            Clientes = clientes,
+            ClienteIdSeleccionado = presupuesto.Cliente.Id  // ID del cliente actual
+        };
+
+        return View(viewModel);
     }
 
+
     [HttpPost]
-    public IActionResult ModificarPresupuesto(Presupuesto presupuesto)
+    public IActionResult ModificarPresupuesto(ModificarPresupuestoViewModel viewModel)
     {
         if (ModelState.IsValid)
         {
+            // Actualizar el cliente del presupuesto antes de guardar
+            var presupuesto = viewModel.Presupuesto;
+            presupuesto.Cliente.Id = viewModel.ClienteIdSeleccionado;
+
+            // Llama al método que guarda el presupuesto en la base de datos
             _presupuestosRepository.ModificarPresupuestoQ(presupuesto);
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("Index");
         }
-        return View(presupuesto);
+
+        // Si hay errores en el modelo, vuelve a cargar la lista de clientes
+        viewModel.Clientes = _clientesRepository.ObtenerClientes();
+        return View(viewModel);
     }
+
 
     [HttpGet]
     public IActionResult EliminarPresupuesto(int id)
