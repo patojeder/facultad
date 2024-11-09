@@ -20,7 +20,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">ID Cliente</th>
+                        <th scope="col">Nombre Cliente</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Acciones</th>
                     </tr>
@@ -30,7 +30,7 @@
                     {
                         <tr>
                             <td>@presupuesto.IdPresupuesto</td>
-                            <td>@presupuesto.Cliente.Id</td>
+                            <td>@presupuesto.Cliente.Nombre</td>
                             <td>@presupuesto.FechaCreacion.ToShortDateString()</td>
                             <td>
                                 <div class="btn-group" role="group">
