@@ -3,6 +3,7 @@
 <h2>Modificar Presupuesto</h2>
 
 <form asp-action="ModificarPresupuesto" method="post" class="container mt-4 p-4 border rounded bg-light">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Presupuesto.IdPresupuesto" />
 
     <div class="form-group mb-2">

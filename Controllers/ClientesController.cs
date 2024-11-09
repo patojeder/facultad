@@ -29,6 +29,7 @@ public class ClientesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult CrearCliente(Cliente cliente)
     {
         if (ModelState.IsValid) // se utiliza para verificar si los datos enviados en un formulario cumplen con todas las reglas de validación definidas en el modelo de datos.
@@ -51,6 +52,7 @@ public class ClientesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult ModificarCliente(int id, Cliente cliente)
     {
         if (ModelState.IsValid)
@@ -73,8 +75,10 @@ public class ClientesController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken] //Es una buena práctica proteger las acciones POST con tokens antifalsificación para prevenir ataques Cross-Site Request Forgery (CSRF).
     public IActionResult EliminarClienteConfirmado(int id)
     {
+        //En este caso no es necesario el ModelState.IsValid porque solo recibo un dato simple(id)
         _clientesRepository.EliminarCliente(id);
         return RedirectToAction(nameof(Index));
     }

@@ -1,8 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+
 public class Producto
 {
-    int idProducto;
-    string descripcion;
-    int precio;
+    private int idProducto;
+
+    [StringLength(250, ErrorMessage = "La descripcion no puede tener mas de 250 caracteres.")]
+    private string descripcion;
+
+    [Required(ErrorMessage = "El precio es obligatorio")]
+    [Range(0, int.MaxValue, ErrorMessage = "El precio debe ser un valor positivo")]
+    private int precio;
 
     public Producto(){}
     public Producto(int idProducto, string descripcion, int precio)

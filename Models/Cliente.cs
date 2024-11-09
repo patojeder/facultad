@@ -1,8 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+
 public class Cliente
 {
     private int id;
+
+    [Required(ErrorMessage = "El nombre es obligatorio")]
+    [StringLength(150, ErrorMessage = "El nombre debe tener menos de 150 caracteres")] //Le agregue yo
     private string nombre;
+    
+    [EmailAddress(ErrorMessage = "Debe tener formato de correo electronico")]
     private string email;
+
+    [Phone(ErrorMessage = "Debe tener formato de número de telefono")]
     private string telefono;
 
     public Cliente(){}

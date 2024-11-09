@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 
 public class Presupuesto
 {
-    private static int autoincremento = 5;
     private int idPresupuesto;
     private DateTime fechaCreacion;
     private Cliente cliente;
@@ -24,7 +23,6 @@ public class Presupuesto
 
     public Presupuesto()
     {
-        IdPresupuesto = autoincremento++;
         FechaCreacion = DateTime.Today;
         detalle = new List<PresupuestoDetalle>();
     }

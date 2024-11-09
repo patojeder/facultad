@@ -45,6 +45,7 @@ public class PresupuestosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult CrearPresupuesto(PresupuestoViewModel viewModel)
     {
         if (ModelState.IsValid)
@@ -109,6 +110,7 @@ public class PresupuestosController : Controller
 
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult ModificarPresupuesto(ModificarPresupuestoViewModel viewModel)
     {
         if (ModelState.IsValid)
@@ -141,8 +143,10 @@ public class PresupuestosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult EliminarPresupuestoConfirmado(int id)
     {
+        //No hace falta el ModelState.IsValid
         _presupuestosRepository.EliminarPresupuestoPorId(id);
         return RedirectToAction(nameof(Index));
     }

@@ -26,6 +26,7 @@
 </table>
 
 <form asp-controller="Clientes" asp-action="EliminarClienteConfirmado" method="post">
+    @Html.AntiForgeryToken()
     <input type="hidden" name="id" value="@Model.Id" />
     <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

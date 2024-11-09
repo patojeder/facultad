@@ -29,6 +29,7 @@ public class ProductosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult CrearProducto(Producto producto)
     {
         if (ModelState.IsValid) // se utiliza para verificar si los datos enviados en un formulario cumplen con todas las reglas de validación definidas en el modelo de datos.
@@ -51,6 +52,7 @@ public class ProductosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult ModificarProducto(int id, Producto producto)
     {
         if (ModelState.IsValid)
@@ -73,8 +75,10 @@ public class ProductosController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken] //Es una buena práctica proteger las acciones POST con tokens antifalsificación para prevenir ataques Cross-Site Request Forgery (CSRF).
     public IActionResult EliminarProductoConfirmado(int id)
     {
+        //En este caso no es necesario el ModelState.IsValid porque solo recibo un dato simple(id)
         _productosRepository.EliminarProducto(id);
         return RedirectToAction(nameof(Index));
     }
