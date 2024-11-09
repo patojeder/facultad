@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {}
+    "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {
+    "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
+        "projectUniqueName": "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
         "projectName": "tl2-tp6-2024-Trigo00",
-        "projectPath": "C:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
+        "projectPath": "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
         "packagesPath": "C:\\Users\\Nico\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\obj\\",
+        "outputPath": "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Nico\\AppData\\Roaming\\NuGet\\NuGet.Config"
