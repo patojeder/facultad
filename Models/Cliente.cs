@@ -6,26 +6,25 @@ public class Cliente
 
     [Required(ErrorMessage = "El nombre es obligatorio")]
     [StringLength(150, ErrorMessage = "El nombre debe tener menos de 150 caracteres")] //Le agregue yo
-    private string nombre;
+    public string Nombre { get; set; }
     
     [EmailAddress(ErrorMessage = "Debe tener formato de correo electronico")]
-    private string email;
+    [Required(ErrorMessage = "El email es obligatorio")]
+    public string Email { get; set; }
 
     [Phone(ErrorMessage = "Debe tener formato de número de telefono")]
-    private string telefono;
+    [Required(ErrorMessage = "El telefono es obligatorio")]
+    public string Telefono { get; set; }
 
     public Cliente(){}
 
     public Cliente(int id, string nombre, string email, string telefono)
     {
         this.id = id;
-        this.nombre = nombre;
-        this.email = email;
-        this.telefono = telefono;
+        Nombre = nombre;
+        Email = email;
+        Telefono = telefono;
     }
 
     public int Id { get => id; set => id = value; }
-    public string Nombre { get => nombre; set => nombre = value; }
-    public string Email { get => email; set => email = value; }
-    public string Telefono { get => telefono; set => telefono = value; }
 }
