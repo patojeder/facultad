@@ -1,27 +1,24 @@
 @model ModificarPresupuestoViewModel
 
 <h2>Modificar Presupuesto</h2>
-
 <form asp-action="ModificarPresupuesto" method="post" class="container mt-4 p-4 border rounded bg-light">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Presupuesto.IdPresupuesto" />
-
+    <input type="hidden" asp-for="Presupuesto.FechaCreacion" />
+    
     <div class="form-group mb-2">
-        <label asp-for="Presupuesto.IdPresupuesto">Id Presupuesto</label>
-        <input asp-for="Presupuesto.IdPresupuesto" class="form-control" disabled />
-    </div>
-
-    <div class="form-group mb-2">
-        <label for="ClienteIdSeleccionado" class="form-label">Seleccione Cliente:</label>
-        <input type="hidden" asp-for="Presupuesto.Cliente.Id" />
-        <select asp-for="ClienteIdSeleccionado" asp-items="@(new SelectList(Model.Clientes, "Id", "Nombre", Model.ClienteIdSeleccionado))" class="form-select">
-            <option value="0">Seleccione un cliente</option>
+        <label for="ClienteIdSeleccionado" class="form-label">Cliente:</label>
+        <select asp-for="ClienteIdSeleccionado" 
+                asp-items="@(new SelectList(Model.Clientes, "Id", "Nombre", Model.ClienteIdSeleccionado))" 
+                class="form-select">
+            <option value="">Seleccione un cliente</option>
         </select>
+        <span asp-validation-for="ClienteIdSeleccionado" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-2">
         <label asp-for="Presupuesto.FechaCreacion">Fecha de Creación</label>
-        <input asp-for="Presupuesto.FechaCreacion" class="form-control" type="date" disabled />
+        <input asp-for="Presupuesto.FechaCreacion" class="form-control" type="date" readonly />
     </div>
 
     <h3 class="mt-3 mb-3">Detalles del Presupuesto</h3>
@@ -29,16 +26,31 @@
         @for (int i = 0; i < Model.Presupuesto.Detalle.Count; i++)
         {
             <div class="product-card mb-3 p-3 border rounded">
-                <h5 class="product-title mt-2 mb-2">Producto: @Model.Presupuesto.Detalle[i].Producto.Descripcion</h5>
+                <input type="hidden" asp-for="Presupuesto.Detalle[i].Producto.IdProducto" />
+                <input type="hidden" asp-for="Presupuesto.Detalle[i].Producto.Descripcion" />
+                <input type="hidden" asp-for="Presupuesto.Detalle[i].Producto.Precio" />
+                
+                <h5 class="product-title mt-2 mb-2">
+                    Producto: @Model.Presupuesto.Detalle[i].Producto.Descripcion
+                </h5>
+                
                 <div class="form-group">
                     <label asp-for="Presupuesto.Detalle[i].Cantidad">Cantidad</label>
-                    <input asp-for="Presupuesto.Detalle[i].Cantidad" class="form-control" type="number" required />
+                    <input asp-for="Presupuesto.Detalle[i].Cantidad" 
+                           class="form-control" 
+                           type="number" 
+                           min="1" 
+                           required />
+                    <span asp-validation-for="Presupuesto.Detalle[i].Cantidad" class="text-danger"></span>
                 </div>
+                
                 <div class="form-group">
-                    <label asp-for="Presupuesto.Detalle[i].Producto.Precio">Precio</label>
-                    <input asp-for="Presupuesto.Detalle[i].Producto.Precio" class="form-control" type="text" disabled />
+                    <label>Precio</label>
+                    <input value="@Model.Presupuesto.Detalle[i].Producto.Precio" 
+                           class="form-control" 
+                           type="text" 
+                           readonly />
                 </div>
-                <input type="hidden" asp-for="Presupuesto.Detalle[i].Producto.IdProducto" />
             </div>
         }
     </div>

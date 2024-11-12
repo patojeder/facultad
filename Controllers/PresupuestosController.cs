@@ -113,22 +113,40 @@ public class PresupuestosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult ModificarPresupuesto(ModificarPresupuestoViewModel viewModel)
     {
-        if (ModelState.IsValid)
+
+        if (viewModel.ClienteIdSeleccionado == 0)
         {
-            // Actualizar el cliente del presupuesto antes de guardar
-            var presupuesto = viewModel.Presupuesto;
-            presupuesto.Cliente.Id = viewModel.ClienteIdSeleccionado;
-
-            // Llama al método que guarda el presupuesto en la base de datos
-            _presupuestosRepository.ModificarPresupuestoQ(presupuesto);
-
-            return RedirectToAction("Index");
+            ModelState.AddModelError("ClienteIdSeleccionado", "Debe seleccionar un cliente válido");
+            viewModel.Clientes = _clientesRepository.ObtenerClientes();
+            return View(viewModel);
         }
 
-        // Si hay errores en el modelo, vuelve a cargar la lista de clientes
-        viewModel.Clientes = _clientesRepository.ObtenerClientes();
-        return View(viewModel);
+        // Validar que el presupuesto exista
+        var presupuestoExistente = _presupuestosRepository.ObtenerPresupuestoPorId(viewModel.Presupuesto.IdPresupuesto);
+        if (presupuestoExistente == null)
+        {
+            return NotFound();
+        }
+
+        // Actualizar los datos del presupuesto
+        var presupuestoActualizado = new Presupuesto
+        {
+            IdPresupuesto = viewModel.Presupuesto.IdPresupuesto,
+            FechaCreacion = presupuestoExistente.FechaCreacion, // Mantener la fecha original
+            Cliente = new Cliente { Id = viewModel.ClienteIdSeleccionado },
+            Detalle = viewModel.Presupuesto.Detalle.Select(d => new PresupuestoDetalle
+            {
+                Producto = d.Producto,
+                Cantidad = d.Cantidad
+            }).ToList() ?? new List<PresupuestoDetalle>()
+        };
+
+        _presupuestosRepository.ModificarPresupuestoQ(presupuestoActualizado);
+
+        return RedirectToAction(nameof(Index));
+
     }
+
 
 
     [HttpGet]
