@@ -5,37 +5,41 @@ class PresupuestosRepository
     string connectionString = @"Data Source = db/Tienda.db;Cache=Shared";
     public void CrearPresupuesto(Presupuesto presupuesto)
     {
-        string query1 = @"INSERT INTO Presupuestos (idPresupuesto, FechaCreacion, idCliente) VALUES (@idPre, @fechaPre, @idC)";
+        string query1 = @"INSERT INTO Presupuestos (FechaCreacion, idCliente) VALUES (@fechaPre, @idC)";
         using (SqliteConnection connection = new SqliteConnection(connectionString))
         {
             connection.Open();
+
+            // Inserta el presupuesto
             using (SqliteCommand command = new SqliteCommand(query1, connection))
             {
-                command.Parameters.Add(new SqliteParameter("@idPre", presupuesto.IdPresupuesto));
                 command.Parameters.Add(new SqliteParameter("@fechaPre", presupuesto.FechaCreacion));
                 command.Parameters.Add(new SqliteParameter("@idC", presupuesto.Cliente.Id));
-
                 command.ExecuteNonQuery();
             }
-        }
 
-        foreach (var item in presupuesto.Detalle)
-        {
-            string query2 = @"INSERT INTO PresupuestosDetalle (idPresupuesto, idProducto, Cantidad) VALUES (@idPre, @idProdu, @canti)";
-            using (SqliteConnection connection = new SqliteConnection(connectionString))
+            // Obtiene el último ID generado por la conexión
+            string queryGetId = "SELECT last_insert_rowid()";
+            using (SqliteCommand getIdCommand = new SqliteCommand(queryGetId, connection))
             {
-                connection.Open();
+                presupuesto.IdPresupuesto = Convert.ToInt32(getIdCommand.ExecuteScalar());
+            }
+
+            // Inserta los detalles usando el mismo ID y conexión
+            foreach (var item in presupuesto.Detalle)
+            {
+                string query2 = @"INSERT INTO PresupuestosDetalle (idPresupuesto, idProducto, Cantidad) VALUES (@idPre, @idProdu, @canti)";
                 using (SqliteCommand command = new SqliteCommand(query2, connection))
                 {
                     command.Parameters.Add(new SqliteParameter("@idPre", presupuesto.IdPresupuesto));
                     command.Parameters.Add(new SqliteParameter("@idProdu", item.Producto.IdProducto));
                     command.Parameters.Add(new SqliteParameter("@canti", item.Cantidad));
-
                     command.ExecuteNonQuery();
                 }
             }
         }
     }
+
 
     public List<Presupuesto> GetPresupuestos()
     {
