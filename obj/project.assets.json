@@ -324,19 +324,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Nico\\.nuget\\packages\\": {}
+    "C:\\Users\\trigo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
+      "projectUniqueName": "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
       "projectName": "tl2-tp6-2024-Trigo00",
-      "projectPath": "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
-      "packagesPath": "C:\\Users\\Nico\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Nico\\Desktop\\Tp6-Taller2\\tl2-tp6-2024-Trigo00\\obj\\",
+      "projectPath": "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
+      "packagesPath": "C:\\Users\\trigo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Nico\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\trigo\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
