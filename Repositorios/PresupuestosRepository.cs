@@ -185,7 +185,7 @@ class PresupuestosRepository
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
-            using (var transaction = connection.BeginTransaction()) //Preguntar como funciona esto
+            using (var transaction = connection.BeginTransaction()) //Preguntar como funciona bien esto
             {
 
                 // Actualiza el presupuesto en la tabla Presupuestos

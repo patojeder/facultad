@@ -58,7 +58,6 @@ public class PresupuestosController : Controller
                 return View(viewModel);
             }
 
-            // Crea el presupuesto con el cliente seleccionado
             var cliente = _clientesRepository.ObtenerCliente(viewModel.ClienteIdSeleccionado);
             var nuevoPresupuesto = new Presupuesto
             {
@@ -85,7 +84,7 @@ public class PresupuestosController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        // Recargar productos y clientes para que se muestren correctamente si hay errores
+        // Recargo los productos y los clientes para que se muestren si hay errores
         viewModel.Clientes = _clientesRepository.ObtenerClientes();
         viewModel.Productos = _productosRepository.ObtenerProductos();
         return View(viewModel);
@@ -94,7 +93,7 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult ModificarPresupuesto(int id)
     {
-        // Cargar el presupuesto y la lista de clientes desde la base de datos
+        // Cargo el presupuesto y los clientes desde la base de datos
         var presupuesto = _presupuestosRepository.ObtenerPresupuestoPorId(id);
         var clientes = _clientesRepository.ObtenerClientes();
 
@@ -121,14 +120,13 @@ public class PresupuestosController : Controller
             return View(viewModel);
         }
 
-        // Validar que el presupuesto exista
         var presupuestoExistente = _presupuestosRepository.ObtenerPresupuestoPorId(viewModel.Presupuesto.IdPresupuesto);
         if (presupuestoExistente == null)
         {
             return NotFound();
         }
 
-        // Actualizar los datos del presupuesto
+        // Actualizo los datos del presupuesto
         var presupuestoActualizado = new Presupuesto
         {
             IdPresupuesto = viewModel.Presupuesto.IdPresupuesto,
