@@ -96,55 +96,75 @@ public class PresupuestosController : Controller
         // Cargo el presupuesto y los clientes desde la base de datos
         var presupuesto = _presupuestosRepository.ObtenerPresupuestoPorId(id);
         var clientes = _clientesRepository.ObtenerClientes();
+        var productos = _productosRepository.ObtenerProductos();
 
         var viewModel = new ModificarPresupuestoViewModel
         {
-            Presupuesto = presupuesto,
             Clientes = clientes,
-            ClienteIdSeleccionado = presupuesto.Cliente.Id  // ID del cliente actual
+            Productos = productos,
+            Presupuesto = presupuesto,
+            ClienteIdSeleccionado = presupuesto.Cliente.Id
         };
-
         return View(viewModel);
     }
 
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public IActionResult ModificarPresupuesto(ModificarPresupuestoViewModel viewModel)
     {
-
-        if (viewModel.ClienteIdSeleccionado == 0)
+        if (!ModelState.IsValid)
         {
-            ModelState.AddModelError("ClienteIdSeleccionado", "Debe seleccionar un cliente válido");
-            viewModel.Clientes = _clientesRepository.ObtenerClientes();
-            return View(viewModel);
-        }
-
-        var presupuestoExistente = _presupuestosRepository.ObtenerPresupuestoPorId(viewModel.Presupuesto.IdPresupuesto);
-        if (presupuestoExistente == null)
-        {
-            return NotFound();
-        }
-
-        // Actualizo los datos del presupuesto
-        var presupuestoActualizado = new Presupuesto
-        {
-            IdPresupuesto = viewModel.Presupuesto.IdPresupuesto,
-            FechaCreacion = presupuestoExistente.FechaCreacion, // Mantener la fecha original
-            Cliente = new Cliente { Id = viewModel.ClienteIdSeleccionado },
-            Detalle = viewModel.Presupuesto.Detalle.Select(d => new PresupuestoDetalle
+            if (viewModel.ClienteIdSeleccionado == 0)
             {
-                Producto = d.Producto,
-                Cantidad = d.Cantidad
-            }).ToList() ?? new List<PresupuestoDetalle>()
-        };
+                ModelState.AddModelError("ClienteIdSeleccionado", "Debe seleccionar un cliente válido");
+                viewModel.Clientes = _clientesRepository.ObtenerClientes();
+                viewModel.Productos = _productosRepository.ObtenerProductos();
+                return View(viewModel);
+            }
 
-        _presupuestosRepository.ModificarPresupuestoQ(presupuestoActualizado);
+            var presupuestoExistente = _presupuestosRepository.ObtenerPresupuestoPorId(viewModel.Presupuesto.IdPresupuesto);
+            if (presupuestoExistente == null)
+            {
+                return NotFound();
+            }
 
-        return RedirectToAction(nameof(Index));
+            // Crear el presupuesto actualizado
+            var presupuestoActualizado = new Presupuesto
+            {
+                IdPresupuesto = viewModel.Presupuesto.IdPresupuesto,
+                FechaCreacion = presupuestoExistente.FechaCreacion,
+                Cliente = new Cliente { Id = viewModel.ClienteIdSeleccionado },
+                Detalle = viewModel.Presupuesto.Detalle?
+                    .Where(d => d.Cantidad > 0 && d.Producto != null) // Filtrar elementos válidos
+                    .Select(d => new PresupuestoDetalle
+                    {
+                        Producto = new Producto
+                        {
+                            IdProducto = d.Producto.IdProducto,
+                            Descripcion = d.Producto.Descripcion,
+                            Precio = d.Producto.Precio
+                        },
+                        Cantidad = d.Cantidad
+                    })
+                    .ToList() ?? new List<PresupuestoDetalle>()
+            };
 
+            try
+            {
+                _presupuestosRepository.ModificarPresupuestoQ(presupuestoActualizado);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error al guardar los cambios: " + ex.Message);
+                viewModel.Clientes = _clientesRepository.ObtenerClientes();
+                viewModel.Productos = _productosRepository.ObtenerProductos();
+                return View(viewModel);
+            }
+        }
+
+    return View(viewModel);
     }
-
 
 
     [HttpGet]

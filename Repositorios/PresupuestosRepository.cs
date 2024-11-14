@@ -185,43 +185,61 @@ class PresupuestosRepository
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
-            using (var transaction = connection.BeginTransaction()) //Preguntar como funciona bien esto
+            using (var transaction = connection.BeginTransaction())
             {
-
-                // Actualiza el presupuesto en la tabla Presupuestos
-                string query = @"UPDATE Presupuestos 
-                                 SET FechaCreacion = @fecha, idCliente = @idC
-                                 WHERE idPresupuesto = @id";
-
-                using (var command = new SqliteCommand(query, connection, transaction))
+                try
                 {
-                    command.Parameters.AddWithValue("@fecha", presupuesto.FechaCreacion);
-                    command.Parameters.AddWithValue("@idC", presupuesto.Cliente.Id);
-                    command.Parameters.AddWithValue("@id", presupuesto.IdPresupuesto);
-                    command.ExecuteNonQuery();
-                }
+                    // 1. Actualiza el presupuesto principal
+                    string queryPresupuesto = @"UPDATE Presupuestos 
+                                          SET FechaCreacion = @fecha, idCliente = @idC
+                                          WHERE idPresupuesto = @id";
 
-                // Actualiza la tabla PresupuestosDetalle
-                if (presupuesto.Detalle != null)
-                {
-                    foreach (var detalle in presupuesto.Detalle)
+                    using (var command = new SqliteCommand(queryPresupuesto, connection, transaction))
                     {
+                        command.Parameters.AddWithValue("@fecha", presupuesto.FechaCreacion);
+                        command.Parameters.AddWithValue("@idC", presupuesto.Cliente.Id);
+                        command.Parameters.AddWithValue("@id", presupuesto.IdPresupuesto);
+                        command.ExecuteNonQuery();
+                    }
 
-                        string updateDetalleQuery = @"UPDATE PresupuestosDetalle 
-                                                       SET Cantidad = @cant
-                                                       WHERE idPresupuesto = @idPr AND idProducto = @idP";
+                    // 2. Elimina todos los detalles existentes
+                    string deleteDetallesQuery = @"DELETE FROM PresupuestosDetalle 
+                                             WHERE idPresupuesto = @idPr";
 
-                        using (var command = new SqliteCommand(updateDetalleQuery, connection, transaction))
+                    using (var command = new SqliteCommand(deleteDetallesQuery, connection, transaction))
+                    {
+                        command.Parameters.AddWithValue("@idPr", presupuesto.IdPresupuesto);
+                        command.ExecuteNonQuery();
+                    }
+
+                    // 3. Inserta los nuevos detalles
+                    if (presupuesto.Detalle != null && presupuesto.Detalle.Any())
+                    {
+                        string insertDetalleQuery = @"INSERT INTO PresupuestosDetalle 
+                                                (idPresupuesto, idProducto, Cantidad)
+                                                VALUES (@idPr, @idP, @cant)";
+
+                        foreach (var detalle in presupuesto.Detalle)
                         {
-                            command.Parameters.AddWithValue("@cant", detalle.Cantidad);
-                            command.Parameters.AddWithValue("@idP", detalle.Producto.IdProducto);
-                            command.Parameters.AddWithValue("@idPr", presupuesto.IdPresupuesto);
-                            command.ExecuteNonQuery();
+                            using (var command = new SqliteCommand(insertDetalleQuery, connection, transaction))
+                            {
+                                command.Parameters.AddWithValue("@idPr", presupuesto.IdPresupuesto);
+                                command.Parameters.AddWithValue("@idP", detalle.Producto.IdProducto);
+                                command.Parameters.AddWithValue("@cant", detalle.Cantidad);
+                                command.ExecuteNonQuery();
+                            }
                         }
                     }
+
+                    // Si todo sale bien, confirma la transacción
+                    transaction.Commit();
                 }
-                // Si todo sale bien, se confirma la transacción
-                transaction.Commit();
+                catch (Exception)
+                {
+                    // Si algo sale mal, deshace todos los cambios
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
     }
