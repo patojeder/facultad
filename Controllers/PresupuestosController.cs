@@ -112,7 +112,7 @@ public class PresupuestosController : Controller
     [HttpPost]
     public IActionResult ModificarPresupuesto(ModificarPresupuestoViewModel viewModel)
     {
-        if (!ModelState.IsValid)
+        if (ModelState.IsValid)
         {
             if (viewModel.ClienteIdSeleccionado == 0)
             {
