@@ -7,16 +7,16 @@ namespace tl2_tp6_2024_Trigo00.Controllers;
 public class PresupuestosController : Controller
 {
     private readonly ILogger<PresupuestosController> _logger;
-    private readonly PresupuestosRepository _presupuestosRepository;
-    private readonly ClientesRepository _clientesRepository;
-    private readonly ProductosRepository _productosRepository;
+    private readonly IPresupuestosRepository _presupuestosRepository;
+    private readonly IClientesRepository _clientesRepository;
+    private readonly IProductosRepository _productosRepository;
 
-    public PresupuestosController(ILogger<PresupuestosController> logger)
+    public PresupuestosController(ILogger<PresupuestosController> logger, IPresupuestosRepository presupuestosRepository, IProductosRepository productosRepository, IClientesRepository clientesRepository)
     {
         _logger = logger;
-        _presupuestosRepository = new PresupuestosRepository();
-        _clientesRepository = new ClientesRepository();
-        _productosRepository = new ProductosRepository();
+        _presupuestosRepository = presupuestosRepository;
+        _clientesRepository = clientesRepository;
+        _productosRepository = productosRepository;
     }
 
     [HttpGet]

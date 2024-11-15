@@ -8,9 +8,10 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // Necesario incluso si el usuario no acepta cookies
 });
 
-builder.Services.AddScoped<IUserRepository, InMemoryUserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IClientesRepository, ClientesRepository>();
 builder.Services.AddSingleton<IProductosRepository, ProductosRepository>();
+builder.Services.AddSingleton<IPresupuestosRepository, PresupuestosRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -1,8 +1,8 @@
-public class InMemoryUserRepository: IUserRepository
+public class UserRepository: IUserRepository
 {
     private readonly List<Usuario> _usuarios;
 
-    public InMemoryUserRepository()
+    public UserRepository()
     {
         _usuarios = new List<Usuario>
         {

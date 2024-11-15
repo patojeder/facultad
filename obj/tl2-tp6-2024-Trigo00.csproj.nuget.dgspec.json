@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {}
+    "c:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {}
   },
   "projects": {
-    "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {
+    "c:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
+        "projectUniqueName": "c:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
         "projectName": "tl2-tp6-2024-Trigo00",
-        "projectPath": "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
+        "projectPath": "c:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\tl2-tp6-2024-Trigo00.csproj",
         "packagesPath": "C:\\Users\\trigo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\obj\\",
+        "outputPath": "c:\\Users\\trigo\\OneDrive\\Escritorio\\Taller de Lenguajes 2\\tl2-tp6-2024-Trigo00\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\trigo\\AppData\\Roaming\\NuGet\\NuGet.Config"
