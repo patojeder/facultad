@@ -1,7 +1,7 @@
 using Microsoft.Data.Sqlite;
 
 
-public class ClientesRepository
+public class ClientesRepository: IClientesRepository
 {
     private string connectionString = @"Data Source = db/Tienda.db;Cache=Shared";
 

@@ -7,12 +7,12 @@ namespace tl2_tp6_2024_Trigo00.Controllers;
 public class ProductosController : Controller
 {
     private readonly ILogger<ProductosController> _logger;
-    private readonly ProductosRepository _productosRepository;
+    private readonly IProductosRepository _productosRepository;
 
-    public ProductosController(ILogger<ProductosController> logger)
+    public ProductosController(ILogger<ProductosController> logger, IProductosRepository productosRepository)
     {
         _logger = logger;
-        _productosRepository = new ProductosRepository();
+        _productosRepository = productosRepository;
     }
 
     [HttpGet]
