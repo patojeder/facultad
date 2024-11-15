@@ -1,0 +1,2 @@
+Las validaciones van en el viewModels. Osea que debo agregar viewModels.
+En todos los metodos POST que reciban un viewModel, debo adaptarlos a los modelos originales y trabajar con esos. Basicamente todas las consultas y demas cosas realizadas en el repository, deben de trabajon con los datos puros
