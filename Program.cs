@@ -1,4 +1,30 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configuración de autenticación con cookies
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";
+        options.AccessDeniedPath = "/Home/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+    });
+
+// Agregar autorización
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdmin", policy =>
+        policy.RequireClaim("Rol", "Admin"));
+        
+    options.AddPolicy("RequireEditorOrAdmin", policy =>
+        policy.RequireClaim("Rol", "Admin", "Editor"));
+        
+    options.AddPolicy("RequireEmployee", policy =>
+        policy.RequireClaim("Rol", "Admin", "Editor", "Empleado"));
+});
+
 
 // Habilitar servicios de sesiones
 builder.Services.AddSession(options =>
@@ -29,12 +55,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Importante: Agregar estos middleware en este orden
+app.UseAuthentication(); // Primero autenticación
+app.UseAuthorization();  // Luego autorización
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

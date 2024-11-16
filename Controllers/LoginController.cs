@@ -27,7 +27,7 @@ public class LoginController: Controller
             //Redirigir a la pagina principal o dashboard
             HttpContext.Session.SetString("IsAuthenticated", "True");
             HttpContext.Session.SetString("User", user.Username);
-            HttpContext.Session.SetString("AccessLevel", user.AccessLevel.ToString());
+            HttpContext.Session.SetString("Rol", user.Rol.ToString());
 
             return RedirectToAction("Index", "Productos");
         }

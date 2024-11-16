@@ -1,4 +1,6 @@
 public interface IUserRepository
 {
-    Usuario ObtenerUsuario(string username, string password);
+    void CrearUsuario(Usuario user);
+    Usuario ObtenerUsuario(string user, string password);
+    void EliminarUsuario(int id);
 }

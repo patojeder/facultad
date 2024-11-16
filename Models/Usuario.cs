@@ -1,15 +1,15 @@
 public class Usuario
 {
     public int Id { get; set; }
+    public string Nombre {get; set; }
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
-    public AccessLevel AccessLevel { get; set; }
+    public Rol Rol { get; set; }
 }
 
-public enum AccessLevel
+public enum Rol
 {
-    Admin,
-    Editor,
-    Invitado,
-    Empleado
+    Admin = 0,
+    Cliente = 1,
+    Empleado = 2
 }

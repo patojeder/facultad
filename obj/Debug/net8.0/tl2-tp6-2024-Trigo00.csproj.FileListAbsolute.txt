@@ -114,3 +114,4 @@ c:\Users\Nico\Desktop\Tp6-Taller2\tl2-tp6-2024-Trigo00\obj\Debug\net8.0\tl2-tp6-
 c:\Users\Nico\Desktop\Tp6-Taller2\tl2-tp6-2024-Trigo00\obj\Debug\net8.0\ref\tl2-tp6-2024-Trigo00.dll
 c:\Users\trigo\OneDrive\Escritorio\Taller de Lenguajes 2\tl2-tp6-2024-Trigo00\bin\Debug\net8.0\db\Tienda.db
 c:\Users\Nico\Desktop\Tp6-Taller2\tl2-tp6-2024-Trigo00\bin\Debug\net8.0\db\Tienda.db
+c:\Users\Nico\Desktop\Tp6-Taller2\tl2-tp6-2024-Trigo00\bin\Debug\net8.0\runtimes\linux-musl-s390x\native\libe_sqlite3.so
