@@ -85,7 +85,13 @@ public class ClientesController : Controller
 
     public IActionResult Index()
     {
-        return View(_clientesRepository.ObtenerClientes());
+        var rol = HttpContext.Session.GetString("Rol");
+        if(rol != "Admin")
+        {
+            return RedirectToAction("Index", "Presupuestos");
+        }else{
+            return View(_clientesRepository.ObtenerClientes());
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

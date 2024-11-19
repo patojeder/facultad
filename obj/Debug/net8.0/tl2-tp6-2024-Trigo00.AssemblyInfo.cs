@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("tl2-tp6-2024-Trigo00")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82595408e047106a5de3e666bdce3a38637c042f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b055bb61cfaf368d60563f467711a004a362bbc0")]
 [assembly: System.Reflection.AssemblyProductAttribute("tl2-tp6-2024-Trigo00")]
 [assembly: System.Reflection.AssemblyTitleAttribute("tl2-tp6-2024-Trigo00")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
