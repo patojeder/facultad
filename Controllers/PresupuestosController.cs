@@ -29,6 +29,7 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult ListarDetalles(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
         var listaDetalle = _presupuestosRepository.ObtenerDetalle(id);
         return View(listaDetalle);
     }
@@ -36,6 +37,13 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult CrearPresupuesto()
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
+
         var viewModel = new PresupuestoViewModel
         {
             Productos = _productosRepository.ObtenerProductos(),
@@ -48,6 +56,13 @@ public class PresupuestosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult CrearPresupuesto(PresupuestoViewModel viewModel)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
+
         if (ModelState.IsValid)
         {
             if (viewModel.ClienteIdSeleccionado == 0)
@@ -93,6 +108,12 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult ModificarPresupuesto(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         // Cargo el presupuesto y los clientes desde la base de datos
         var presupuesto = _presupuestosRepository.ObtenerPresupuestoPorId(id);
         var clientes = _clientesRepository.ObtenerClientes();
@@ -112,6 +133,12 @@ public class PresupuestosController : Controller
     [HttpPost]
     public IActionResult ModificarPresupuesto(ModificarPresupuestoViewModel viewModel)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         if (ModelState.IsValid)
         {
             if (viewModel.ClienteIdSeleccionado == 0)
@@ -163,13 +190,19 @@ public class PresupuestosController : Controller
             }
         }
 
-    return View(viewModel);
+        return View(viewModel);
     }
 
 
     [HttpGet]
     public IActionResult EliminarPresupuesto(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         var presupuesto = _presupuestosRepository.ObtenerPresupuestoPorId(id);
         if (presupuesto == null)
         {
@@ -182,6 +215,12 @@ public class PresupuestosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult EliminarPresupuestoConfirmado(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         //No hace falta el ModelState.IsValid
         _presupuestosRepository.EliminarPresupuestoPorId(id);
         return RedirectToAction(nameof(Index));
@@ -189,6 +228,8 @@ public class PresupuestosController : Controller
 
     public IActionResult Index()
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        ViewData["Admin"] = HttpContext.Session.GetString("Rol") == "Admin";
         return View(_presupuestosRepository.GetPresupuestos());
     }
 

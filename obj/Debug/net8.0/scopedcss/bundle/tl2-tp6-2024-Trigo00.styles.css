@@ -47,3 +47,19 @@ button.accept-policy[b-70rb5uetuh] {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.dropdown-menu-end[b-70rb5uetuh] {
+  right: 0;
+  left: auto;
+}
+
+.nav-link.dropdown-toggle[b-70rb5uetuh]::after {
+  display: inline-block;
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}

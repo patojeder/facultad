@@ -25,6 +25,12 @@ public class ProductosController : Controller
     [HttpGet]
     public IActionResult CrearProducto()
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         return View();
     }
 
@@ -32,6 +38,13 @@ public class ProductosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult CrearProducto(Producto producto)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
+
         if (ModelState.IsValid) // se utiliza para verificar si los datos enviados en un formulario cumplen con todas las reglas de validación definidas en el modelo de datos.
         {
             _productosRepository.CrearProducto(producto);
@@ -43,6 +56,12 @@ public class ProductosController : Controller
     [HttpGet]
     public IActionResult ModificarProducto(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         var producto = _productosRepository.ObtenerProducto(id);
         if (producto == null)
         {
@@ -55,6 +74,13 @@ public class ProductosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult ModificarProducto(int id, Producto producto)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
+
         if (ModelState.IsValid)
         {
             _productosRepository.ModificarProducto(id, producto);
@@ -66,6 +92,13 @@ public class ProductosController : Controller
     [HttpGet]
     public IActionResult EliminarProducto(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
+
         var producto = _productosRepository.ObtenerProducto(id);
         if (producto == null)
         {
@@ -78,6 +111,12 @@ public class ProductosController : Controller
     [ValidateAntiForgeryToken] //Es una buena práctica proteger las acciones POST con tokens antifalsificación para prevenir ataques Cross-Site Request Forgery (CSRF).
     public IActionResult EliminarProductoConfirmado(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         //En este caso no es necesario el ModelState.IsValid porque solo recibo un dato simple(id)
         _productosRepository.EliminarProducto(id);
         return RedirectToAction(nameof(Index));
@@ -85,6 +124,12 @@ public class ProductosController : Controller
 
     public IActionResult Index()
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User")))
+            return RedirectToAction("Index", "Login");
+
+        var userRole = HttpContext.Session.GetString("Rol");
+        ViewData["Admin"] = !string.IsNullOrEmpty(userRole) && userRole.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+
         return View(_productosRepository.ObtenerProductos());
     }
 

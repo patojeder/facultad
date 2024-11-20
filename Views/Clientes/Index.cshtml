@@ -1,8 +1,12 @@
 @model List<Cliente>
 
 <h2>Listado de Clientes</h2>
-
-<a asp-controller="Clientes" asp-action="CrearCliente" class="btn btn-primary mb-3">Crear Nuevo Cliente</a>
+@if((bool)ViewData["Admin"])
+{
+<a asp-controller="Clientes" asp-action="CrearCliente" class="btn btn-primary mb-3">
+    <i class="fas fa-plus"></i> Crear Nuevo Cliente
+</a>
+}
 
 <table class="table table-striped">
     <thead>
@@ -11,7 +15,10 @@
             <th>Nombre</th>
             <th>Email</th>
             <th>Telefono</th>
+            @if((bool)ViewData["Admin"])
+            {
             <th>Acciones</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -23,10 +30,13 @@
                 <td>@cliente.Email</td>
                 <td>@cliente.Telefono</td>
                 <td>
-                    <a asp-asp-controller="Clientes" asp-action="ModificarCliente" method="get" asp-route-id="@cliente.Id"
-                        class="btn btn-warning btn-sm">Modificar</a>
+                    @if((bool)ViewData["Admin"])
+                    {
+                    <a asp-controller="Clientes" asp-action="ModificarCliente" method="get" asp-route-id="@cliente.Id"
+                        class="btn btn-warning btn-sm ms-1"><i class="fas fa-edit"></i> Modificar</a>
                     <a asp-controller="Clientes" asp-action="EliminarCliente" method="get" asp-route-id="@cliente.Id"
-                        class="btn btn-danger btn-sm">Eliminar</a>
+                        class="btn btn-danger btn-sm ms-1"><i class="fas fa-trash"></i> Eliminar</a>
+                    }
                 </td>
             </tr>
         }

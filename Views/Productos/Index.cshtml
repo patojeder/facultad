@@ -2,7 +2,12 @@
 
 <h2>Listado de Productos</h2>
 
-<a asp-controller="Productos" asp-action="CrearProducto" class="btn btn-primary mb-3">Crear Nuevo Producto</a>
+@if((bool)ViewData["Admin"])
+{
+<a asp-controller="Productos" asp-action="CrearProducto" class="btn btn-primary mb-3">
+    <i class="fas fa-plus"></i> Crear Nuevo Producto
+</a>
+}
 
 <table class="table table-striped">
     <thead>
@@ -10,7 +15,10 @@
             <th>ID</th>
             <th>Descripción</th>
             <th>Precio</th>
+            @if((bool)ViewData["Admin"])
+            {
             <th>Acciones</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -21,10 +29,13 @@
                 <td>@producto.Descripcion</td>
                 <td>$ @producto.Precio</td>
                 <td>
-                    <a asp-asp-controller="Productos" asp-action="ModificarProducto" method="get" asp-route-id="@producto.IdProducto"
-                        class="btn btn-warning btn-sm">Modificar</a>
+                    @if((bool)ViewData["Admin"])
+                    {
+                    <a asp-controller="Productos" asp-action="ModificarProducto" method="get" asp-route-id="@producto.IdProducto"
+                        class="btn btn-warning btn-sm ms-1"><i class="fas fa-edit"></i> Modificar</a>
                     <a asp-controller="Productos" asp-action="EliminarProducto" method="get" asp-route-id="@producto.IdProducto"
-                        class="btn btn-danger btn-sm">Eliminar</a>
+                        class="btn btn-danger btn-sm ms-1"><i class="fas fa-trash"></i> Eliminar</a>
+                    }
                 </td>
             </tr>
         }

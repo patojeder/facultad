@@ -9,6 +9,6 @@ public class Usuario
 
 public enum Rol
 {
-    Admin = 0,
-    Usuario = 1
+    Usuario = 0,
+    Admin = 1
 }

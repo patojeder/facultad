@@ -25,6 +25,12 @@ public class ClientesController : Controller
     [HttpGet]
     public IActionResult CrearCliente()
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         return View();
     }
 
@@ -32,6 +38,12 @@ public class ClientesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult CrearCliente(Cliente cliente)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         if (ModelState.IsValid) // se utiliza para verificar si los datos enviados en un formulario cumplen con todas las reglas de validación definidas en el modelo de datos.
         {
             _clientesRepository.CrearCliente(cliente);
@@ -43,6 +55,12 @@ public class ClientesController : Controller
     [HttpGet]
     public IActionResult ModificarCliente(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         var cliente = _clientesRepository.ObtenerCliente(id);
         if (cliente == null)
         {
@@ -55,6 +73,13 @@ public class ClientesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult ModificarCliente(int id, Cliente cliente)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
+
         if (ModelState.IsValid)
         {
             _clientesRepository.ModificarCliente(id, cliente);
@@ -66,6 +91,12 @@ public class ClientesController : Controller
     [HttpGet]
     public IActionResult EliminarCliente(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         var cliente = _clientesRepository.ObtenerCliente(id);
         if (cliente == null)
         {
@@ -78,6 +109,12 @@ public class ClientesController : Controller
     [ValidateAntiForgeryToken] //Es una buena práctica proteger las acciones POST con tokens antifalsificación para prevenir ataques Cross-Site Request Forgery (CSRF).
     public IActionResult EliminarClienteConfirmado(int id)
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        if (HttpContext.Session.GetString("Rol") != "Admin")
+        {
+            TempData["ErrorMessage"] = "No tienes permisos para realizar esta acción.";
+            return RedirectToAction("Index");
+        }
         //En este caso no es necesario el ModelState.IsValid porque solo recibo un dato simple(id)
         _clientesRepository.EliminarCliente(id);
         return RedirectToAction(nameof(Index));
@@ -85,13 +122,9 @@ public class ClientesController : Controller
 
     public IActionResult Index()
     {
-        var rol = HttpContext.Session.GetString("Rol");
-        if(rol != "Admin")
-        {
-            return RedirectToAction("Index", "Presupuestos");
-        }else{
-            return View(_clientesRepository.ObtenerClientes());
-        }
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("User"))) return RedirectToAction ("Index", "Login");
+        ViewData["Admin"] = HttpContext.Session.GetString("Rol") == "Admin";
+        return View(_clientesRepository.ObtenerClientes());
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
